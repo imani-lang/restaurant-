@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DL Restau Cross</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Mulish:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ================= HEADER (toujours visible) ================= -->
+<header class="site-header">
+  <div class="header-inner">
+    <button class="logo-btn" id="logoBtn" title="Voir les infos du restaurant">
+      <img src="logo.png" alt="DL Restau Cross" class="logo-img"><h1>DL Restau Cross</h1>
+    </button>
+    
+
+    <nav class="header-actions" id="headerActions" hidden>
+      <span class="user-chip" id="userChip"></span>
+      <button class="btn-ghost" id="homeBtn">Accueil</button>
+      <button class="btn-ghost" id="cartBtn">Panier <span id="cartCount">0</span></button>
+    </nav>
+  </div>
+</header>
+
+<!-- ================= SCREEN 1 : WELCOME / CHOIX ================= -->
+<main>
+<section id="screen-welcome" class="screen active">
+  <div class="welcome-wrap">
+    <p class="eyebrow">Sidi Abdellah &middot; Zeralda &middot; Boulevard 2</p>
+    <h1 class="hero-title">Pizzas. Tacos. Burgers.<br>Tout croise ici.</h1>
+    <p class="hero-sub">Choisissez votre mode : réservez une table pour manger sur place, ou commandez et faites-vous livrer.</p>
+
+    <div class="choice-grid">
+      <button class="choice-card" id="choiceReserver">
+        <span class="choice-badge">01</span>
+        <h2>Réserver une table</h2>
+        <p>Choisissez le jour, l'heure et le nombre de personnes. On vous attribue votre table.</p>
+        <span class="choice-cta">Réserver &rarr;</span>
+      </button>
+
+      <button class="choice-card" id="choiceCommander">
+        <span class="choice-badge">02</span>
+        <h2>Commander &amp; livraison</h2>
+        <p>Parcourez le menu complet et faites-vous livrer chez vous.</p>
+        <span class="choice-cta">Commander &rarr;</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SCREEN 2 : AUTH (connexion / inscription) ================= -->
+<section id="screen-auth" class="screen">
+  <div class="auth-wrap">
+    <button class="back-link" data-back="screen-welcome">&larr; Retour</button>
+    <h2 id="authTitle">Connexion</h2>
+    <p class="auth-hint" id="authHint">Connectez-vous pour continuer votre réservation.</p>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-tab="login">Se connecter</button>
+      <button class="auth-tab" data-tab="register">Créer un compte</button>
+    </div>
+
+    <form id="loginForm" class="auth-form">
+      <label>Téléphone
+        <input type="tel" id="loginPhone" placeholder="05XX XX XX XX" required>
+      </label>
+      <label>Mot de passe
+        <input type="password" id="loginPassword" placeholder="••••••••" required>
+      </label>
+      <button type="submit" class="btn-primary">Se connecter</button>
+    </form>
+
+    <form id="registerForm" class="auth-form hidden">
+      <div class="form-row">
+        <label>Nom
+          <input type="text" id="regNom" required>
+        </label>
+        <label>Prénom
+          <input type="text" id="regPrenom" required>
+        </label>
+      </div>
+      <label id="locField">Localisation (adresse de livraison)
+        <input type="text" id="regLocalisation" placeholder="Quartier, ville...">
+      </label>
+      <label>Numéro de téléphone
+        <input type="tel" id="regTelephone" placeholder="05XX XX XX XX" required>
+      </label>
+      <label>Mot de passe
+        <input type="password" id="regPassword" placeholder="••••••••" required>
+      </label>
+      <button type="submit" class="btn-primary">Créer mon compte</button>
+    </form>
+  </div>
+</section>
+
+<!-- ================= SCREEN 3 : RESERVATION ================= -->
+<section id="screen-reservation" class="screen">
+  <div class="form-wrap">
+    <button class="back-link" data-back="screen-welcome">&larr; Retour</button>
+    <h2>Réserver une table</h2>
+    <p class="auth-hint">Bonjour <strong id="reservUserName"></strong>, précisez votre créneau.</p>
+
+    <form id="reservationForm" class="auth-form">
+      <div class="form-row">
+        <label>Date
+          <input type="date" id="reservDate" required>
+        </label>
+        <label>Heure
+          <select id="reservHeure" required>
+            <option value="">Choisir...</option>
+          </select>
+        </label>
+      </div>
+      <label>Nombre de personnes
+        <div class="stepper">
+          <button type="button" class="step-btn" id="stepMinus">-</button>
+          <input type="number" id="reservPersonnes" min="1" max="20" value="2" readonly>
+          <button type="button" class="step-btn" id="stepPlus">+</button>
+        </div>
+      </label>
+      <button type="submit" class="btn-primary">Confirmer la réservation</button>
+    </form>
+  </div>
+</section>
+
+<!-- ================= SCREEN 4 : CONFIRMATION RESERVATION ================= -->
+<section id="screen-reservation-confirm" class="screen">
+  <div class="confirm-wrap">
+    <div class="stamp-badge">✓</div>
+    <h2>Réservation confirmée</h2>
+    <p>Votre table vous attend.</p>
+    <div class="ticket">
+      <div class="ticket-row"><span>Table N°</span><strong id="confTable"></strong></div>
+      <div class="ticket-row"><span>Nom</span><strong id="confNom"></strong></div>
+      <div class="ticket-row"><span>Date</span><strong id="confDate"></strong></div>
+      <div class="ticket-row"><span>Heure</span><strong id="confHeure"></strong></div>
+      <div class="ticket-row"><span>Personnes</span><strong id="confPersonnes"></strong></div>
+    </div>
+    <button class="btn-primary" data-back="screen-welcome">Retour à l'accueil</button>
+  </div>
+</section>
+
+<!-- ================= SCREEN 5 : MENU / COMMANDE ================= -->
+<section id="screen-menu" class="screen">
+  <div class="menu-wrap">
+    <button class="back-link" data-back="screen-welcome">&larr; Retour</button>
+    <h2>Notre menu</h2>
+
+    <div class="category-tabs" id="categoryTabs"></div>
+    <div class="menu-grid" id="menuGrid"></div>
+  </div>
+
+  <!-- Panier lateral -->
+  <aside class="cart-panel" id="cartPanel">
+    <div class="cart-header">
+      <h3>Votre panier</h3>
+      <button class="close-btn" id="closeCart">&times;</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-total">
+      <span>Total</span>
+      <strong id="cartTotal">0 DA</strong>
+    </div>
+    <button class="btn-primary" id="checkoutBtn">Commander</button>
+  </aside>
+  <div class="cart-overlay" id="cartOverlay"></div>
+</section>
+
+<!-- ================= SCREEN 6 : CONFIRMATION COMMANDE ================= -->
+<section id="screen-order-confirm" class="screen">
+  <div class="confirm-wrap">
+    <div class="stamp-badge">✓</div>
+    <h2>Commande envoyée</h2>
+    <p>Votre commande est en préparation, elle arrive bientôt.</p>
+    <div class="ticket">
+      <div class="ticket-row"><span>Commande N°</span><strong id="orderNum"></strong></div>
+      <div class="ticket-row"><span>Client</span><strong id="orderNom"></strong></div>
+      <div class="ticket-row"><span>Livraison à</span><strong id="orderAdresse"></strong></div>
+      <div class="ticket-row"><span>Total</span><strong id="orderTotal"></strong></div>
+    </div>
+    <button class="btn-primary" data-back="screen-welcome">Retour à l'accueil</button>
+  </div>
+</section>
+</main>
+
+<!-- ================= MODAL INFOS RESTAURANT (logo) ================= -->
+<div class="modal-overlay" id="infoModalOverlay">
+  <div class="modal-box">
+    <button class="close-btn" id="closeModal">&times;</button>
+    <img src="logo.png" alt="DL Restau Cross" class="logo-img large">
+    <h2>DL Restau Cross</h2>
+    <p class="modal-desc">Pizzas, tacos, burgers, sandwichs, plats et desserts : DL Restau Cross fait le carrefour de toutes les envies, sur place ou livrées chez vous.</p>
+    <ul class="modal-info-list">
+      <li><strong>Adresse :</strong> Sidi Abdellah, Zeralda, Boulevard 2</li>
+      <li><strong>Téléphone :</strong> 0555 12 34 56</li>
+      <li><strong>Fixe :</strong> 023 45 67 89</li>
+    </ul>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <p>&copy; <span id="year"></span> DL Restau Cross — Sidi Abdellah, Zeralda, Boulevard 2</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
